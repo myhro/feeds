@@ -6,3 +6,9 @@ build:
 
 clean:
 	rm -rf $(DIST_FOLDER)/
+
+deploy:
+	npx wrangler publish
+
+deploy-prod:
+	npx wrangler publish --env production
