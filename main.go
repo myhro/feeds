@@ -25,7 +25,7 @@ func main() {
 	}
 
 	feed := &feeds.Feed{
-		Title:   "Liquipedia - Player Transfers: Latest",
+		Title:   "Liquipedia - Player Transfers",
 		Link:    &feeds.Link{Href: url},
 		Created: time.Now().UTC(),
 	}
