@@ -1,0 +1,8 @@
+---
+extends: default
+rules:
+  empty-lines:
+    max: 0
+  line-length: disable
+  truthy:
+    check-keys: false
