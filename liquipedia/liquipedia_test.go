@@ -78,6 +78,44 @@ func (s *LiquipediaTestSuite) TestDescriptionLinks() {
 	}
 }
 
+func (s *LiquipediaTestSuite) TestDescriptionRemovedFlags() {
+	table := []struct {
+		in    *goquery.Selection
+		flags []string
+	}{
+		{
+			in: s.Brame,
+			flags: []string{
+				"Ukraine",
+			},
+		},
+		{
+			in: s.Creepwave,
+			flags: []string{
+				"Belarus",
+				"Bulgaria",
+				"Jordan",
+				"Netherlands",
+				"Russia",
+			},
+		},
+		{
+			in: s.ThePrimeAndArmyGeniuses,
+			flags: []string{
+				"Indonesia",
+			},
+		},
+	}
+
+	for _, tt := range table {
+		desc, err := Description(tt.in)
+		s.Nil(err)
+		for _, flag := range tt.flags {
+			s.NotContains(desc, flag)
+		}
+	}
+}
+
 func (s *LiquipediaTestSuite) TestDescriptionRemovedImages() {
 	list := []*goquery.Selection{
 		s.Brame,
