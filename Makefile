@@ -12,3 +12,6 @@ deploy:
 
 deploy-prod:
 	npx wrangler publish --env production
+
+test:
+	go test -v ./...

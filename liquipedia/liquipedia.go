@@ -18,6 +18,13 @@ func Created(s *goquery.Selection) (time.Time, error) {
 }
 
 func Description(s *goquery.Selection) (string, error) {
+	s.Find("img").Each(func(i int, img *goquery.Selection) {
+		alt, ok := img.Attr("alt")
+		if ok {
+			img.ReplaceWithHtml(alt)
+		}
+	})
+
 	html, err := s.Html()
 	if err != nil {
 		return "", fmt.Errorf("Selection.Html: %w", err)
