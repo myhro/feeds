@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/feeds"
+
+	"github.com/myhro/feeds/liquipedia"
 )
 
 func main() {
@@ -35,21 +36,19 @@ func main() {
 			return
 		}
 
-		date := s.Find(".Date").Text()
-		created, err := time.Parse("2006-01-02", date)
+		created, err := liquipedia.Created(s)
 		if err != nil {
-			log.Fatal("time.Parse: ", err)
+			log.Fatal("liquipedia.Created: ", err)
+		}
+		description, err := liquipedia.Description(s)
+		if err != nil {
+			log.Fatal("liquipedia.Description: ", err)
 		}
 
-		title := s.Find(".Name").Text()
-		title = strings.TrimSpace(title)
-		link, _ := s.Find(".Ref").Find("a").Attr("href")
-		description, _ := s.Html()
-
 		item := &feeds.Item{
-			Title:       title,
+			Title:       liquipedia.Title(s),
 			Created:     created,
-			Link:        &feeds.Link{Href: link},
+			Link:        &feeds.Link{Href: liquipedia.Link(s)},
 			Description: description,
 		}
 		feed.Items = append(feed.Items, item)
