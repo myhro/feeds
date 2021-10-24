@@ -74,6 +74,7 @@ func (s *LiquipediaTestSuite) TestDescriptionLinks() {
 		desc, err := Description(tt.in)
 		s.Nil(err)
 		s.Contains(desc, tt.link)
+		s.Equal(1, strings.Count(desc, tt.link))
 	}
 }
 
