@@ -2,6 +2,7 @@ package liquipedia
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/PuerkitoBio/goquery"
@@ -87,6 +88,35 @@ func (s *LiquipediaTestSuite) TestDescriptionRemovedImages() {
 		desc, err := Description(sel)
 		s.Nil(err)
 		s.NotEmpty(desc)
-		s.Zero(sel.Find("img").Length())
+
+		doc, err := goquery.NewDocumentFromReader(strings.NewReader(desc))
+		s.Nil(err)
+		s.Zero(doc.Find("img").Length())
+	}
+}
+
+func (s *LiquipediaTestSuite) TestTitle() {
+	table := []struct {
+		in    *goquery.Selection
+		title string
+	}{
+		{
+			in:    s.Brame,
+			title: "Nefrit",
+		},
+		{
+			in:    s.Creepwave,
+			title: "ATF Chu Crystallis Fishman hansha",
+		},
+		{
+			in:    s.ThePrimeAndArmyGeniuses,
+			title: "Azur4",
+		},
+	}
+
+	for _, tt := range table {
+		// Ensure 'Description()' has no side-effects
+		Description(tt.in)
+		s.Equal(tt.title, Title(tt.in))
 	}
 }

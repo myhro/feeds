@@ -18,6 +18,7 @@ func Created(s *goquery.Selection) (time.Time, error) {
 }
 
 func Description(s *goquery.Selection) (string, error) {
+	s = s.Clone()
 	s.Find("img").Each(func(i int, img *goquery.Selection) {
 		alt, ok := img.Attr("alt")
 		if ok {
