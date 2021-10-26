@@ -2,11 +2,17 @@ package liquipedia
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/gorilla/feeds"
+	"github.com/spf13/cobra"
 )
+
+const FeedTitle = "Liquipedia - Player Transfers"
 
 func Created(s *goquery.Selection) (time.Time, error) {
 	date := s.Find(".Date").Text()
@@ -41,6 +47,55 @@ func Link(s *goquery.Selection) string {
 		return ""
 	}
 	return link
+}
+
+func Run(cmd *cobra.Command, args []string) {
+	url := "https://liquipedia.net/dota2/Portal:Transfers"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal("http.Get: ", err)
+	}
+
+	doc, err := goquery.NewDocumentFromResponse(resp)
+	if err != nil {
+		log.Fatal("goquery.NewDocumentFromResponse: ", err)
+	}
+
+	feed := &feeds.Feed{
+		Title:   FeedTitle,
+		Link:    &feeds.Link{Href: url},
+		Created: time.Now().UTC(),
+	}
+
+	doc.Find(".divRow").Each(func(i int, s *goquery.Selection) {
+		if i >= 10 {
+			return
+		}
+
+		created, err := Created(s)
+		if err != nil {
+			log.Fatal("Created: ", err)
+		}
+		description, err := Description(s)
+		if err != nil {
+			log.Fatal("Description: ", err)
+		}
+
+		item := &feeds.Item{
+			Title:       Title(s),
+			Created:     created,
+			Link:        &feeds.Link{Href: Link(s)},
+			Description: description,
+		}
+		feed.Items = append(feed.Items, item)
+	})
+
+	atom, err := feed.ToAtom()
+	if err != nil {
+		log.Fatal("feed.ToAtom: ", err)
+	}
+	fmt.Println(atom)
 }
 
 func Title(s *goquery.Selection) string {
