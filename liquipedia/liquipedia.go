@@ -3,13 +3,14 @@ package liquipedia
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/feeds"
 	"github.com/spf13/cobra"
+
+	"github.com/myhro/feeds/generator"
 )
 
 const FeedTitle = "Liquipedia - Player Transfers"
@@ -50,25 +51,13 @@ func Link(s *goquery.Selection) string {
 }
 
 func Run(cmd *cobra.Command, args []string) {
-	url := "https://liquipedia.net/dota2/Portal:Transfers"
-
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal("http.Get: ", err)
+	gen := generator.Generator{
+		CSS:   ".divRow",
+		Title: FeedTitle,
+		URL:   "https://liquipedia.net/dota2/Portal:Transfers",
 	}
 
-	doc, err := goquery.NewDocumentFromResponse(resp)
-	if err != nil {
-		log.Fatal("goquery.NewDocumentFromResponse: ", err)
-	}
-
-	feed := &feeds.Feed{
-		Title:   FeedTitle,
-		Link:    &feeds.Link{Href: url},
-		Created: time.Now().UTC(),
-	}
-
-	doc.Find(".divRow").Each(func(i int, s *goquery.Selection) {
+	gen.Parse = func(i int, s *goquery.Selection) {
 		if i >= 10 {
 			return
 		}
@@ -77,6 +66,7 @@ func Run(cmd *cobra.Command, args []string) {
 		if err != nil {
 			log.Fatal("Created: ", err)
 		}
+
 		description, err := Description(s)
 		if err != nil {
 			log.Fatal("Description: ", err)
@@ -88,12 +78,12 @@ func Run(cmd *cobra.Command, args []string) {
 			Link:        &feeds.Link{Href: Link(s)},
 			Description: description,
 		}
-		feed.Items = append(feed.Items, item)
-	})
+		gen.Feed.Items = append(gen.Feed.Items, item)
+	}
 
-	atom, err := feed.ToAtom()
+	atom, err := gen.Generate()
 	if err != nil {
-		log.Fatal("feed.ToAtom: ", err)
+		log.Fatal("Generator.Generate: ", err)
 	}
 	fmt.Println(atom)
 }
