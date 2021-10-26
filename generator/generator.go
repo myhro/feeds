@@ -18,9 +18,16 @@ type Generator struct {
 }
 
 func (g *Generator) Generate() (string, error) {
-	resp, err := http.Get(g.URL)
+	req, err := http.NewRequest("GET", g.URL, nil)
 	if err != nil {
-		return "", fmt.Errorf("http.Get: %w", err)
+		return "", fmt.Errorf("http.NewRequest: %w", err)
+	}
+	req.Header.Add("Accept-Language", "en-us")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("Client.Do: %w", err)
 	}
 
 	doc, err := goquery.NewDocumentFromResponse(resp)

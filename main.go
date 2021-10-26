@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/liquipedia"
 )
 
@@ -14,12 +15,19 @@ func main() {
 		Short: "Atom/RSS feed generator for websites that don't offer them",
 	}
 
+	copasaCmd := &cobra.Command{
+		Use:   "copasa",
+		Short: copasa.FeedTitle,
+		Run:   copasa.Run,
+	}
+
 	liquipediaCmd := &cobra.Command{
 		Use:   "liquipedia",
 		Short: liquipedia.FeedTitle,
 		Run:   liquipedia.Run,
 	}
 
+	rootCmd.AddCommand(copasaCmd)
 	rootCmd.AddCommand(liquipediaCmd)
 
 	err := rootCmd.Execute()
