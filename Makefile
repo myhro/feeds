@@ -1,9 +1,14 @@
 DIST_FOLDER = dist
 
-.PHONY: copasa liquipedia
+.PHONY: autossegredos copasa liquipedia
 
 clean:
 	rm -rf $(DIST_FOLDER)/
+
+autossegredos: dist
+	go run main.go autossegredos > $(DIST_FOLDER)/autossegredos.xml
+
+build: autossegredos liquipedia
 
 copasa: dist
 	go run main.go copasa > $(DIST_FOLDER)/copasa.xml
