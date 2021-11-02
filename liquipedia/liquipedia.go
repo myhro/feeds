@@ -1,6 +1,8 @@
 package liquipedia
 
 import (
+	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"strings"
@@ -42,19 +44,20 @@ func Description(s *goquery.Selection) (string, error) {
 	return html, nil
 }
 
-func Link(s *goquery.Selection) string {
-	link, ok := s.Find(".Ref").Find("a").Attr("href")
-	if !ok {
-		return ""
-	}
-	return link
+func ID(date time.Time, text string) string {
+	sum := sha256.Sum256([]byte(text))
+	hash := base64.StdEncoding.EncodeToString(sum[:])
+	id := fmt.Sprintf("tag:liquipedia.net,%v:%v", date.Format("2006-01-02"), hash)
+	return id
 }
 
 func Run(cmd *cobra.Command, args []string) {
+	url := "https://liquipedia.net/dota2/Portal:Transfers"
+
 	gen := generator.Generator{
 		CSS:   ".divRow",
 		Title: FeedTitle,
-		URL:   "https://liquipedia.net/dota2/Portal:Transfers",
+		URL:   url,
 	}
 
 	gen.Parse = func(i int, s *goquery.Selection) {
@@ -75,7 +78,8 @@ func Run(cmd *cobra.Command, args []string) {
 		item := &feeds.Item{
 			Title:       Title(s),
 			Created:     created,
-			Link:        &feeds.Link{Href: Link(s)},
+			Id:          ID(created, description),
+			Link:        &feeds.Link{Href: url},
 			Description: description,
 		}
 		gen.Feed.Items = append(gen.Feed.Items, item)

@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/stretchr/testify/suite"
@@ -132,6 +133,12 @@ func (s *LiquipediaTestSuite) TestDescriptionRemovedImages() {
 		s.Nil(err)
 		s.Zero(doc.Find("img").Length())
 	}
+}
+
+func (s *LiquipediaTestSuite) TestID() {
+	date := time.Date(2021, time.October, 1, 12, 0, 0, 0, time.UTC)
+	id := ID(date, "example text")
+	s.Equal("tag:liquipedia.net,2021-10-01:DpSuNtpv8DmSpX/dvfRyi2CdDX/m6wGfqfG5tbVA2DU=", id)
 }
 
 func (s *LiquipediaTestSuite) TestTitle() {
