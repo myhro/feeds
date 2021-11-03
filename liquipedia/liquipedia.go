@@ -46,7 +46,7 @@ func Description(s *goquery.Selection) (string, error) {
 
 func ID(date time.Time, text string) string {
 	sum := sha256.Sum256([]byte(text))
-	hash := base64.StdEncoding.EncodeToString(sum[:])
+	hash := base64.RawStdEncoding.EncodeToString(sum[:])
 	id := fmt.Sprintf("tag:liquipedia.net,%v:%v", date.Format("2006-01-02"), hash)
 	return id
 }
