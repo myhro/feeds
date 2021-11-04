@@ -17,12 +17,14 @@ import (
 
 const FeedTitle = "Liquipedia - Player Transfers"
 
-func Created(s *goquery.Selection) (time.Time, error) {
+func Date(s *goquery.Selection) (time.Time, error) {
 	date := s.Find(".Date").Text()
+
 	created, err := time.Parse("2006-01-02", date)
 	if err != nil {
 		return time.Time{}, fmt.Errorf("time.Parse: %w", err)
 	}
+
 	return created, nil
 }
 
@@ -64,11 +66,22 @@ func DescriptionWithoutRef(s *goquery.Selection) (string, error) {
 	return html, nil
 }
 
-func ID(date time.Time, text string) string {
-	sum := sha256.Sum256([]byte(text))
+func ID(s *goquery.Selection) (string, error) {
+	date, err := Date(s)
+	if err != nil {
+		return "", fmt.Errorf("Date: %w", err)
+	}
+
+	desc, err := DescriptionWithoutRef(s)
+	if err != nil {
+		return "", fmt.Errorf("DescriptionWithoutRef: %w", err)
+	}
+
+	sum := sha256.Sum256([]byte(desc))
 	hash := base64.RawStdEncoding.EncodeToString(sum[:])
 	id := fmt.Sprintf("tag:liquipedia.net,%v:%v", date.Format("2006-01-02"), hash)
-	return id
+
+	return id, nil
 }
 
 func Run(cmd *cobra.Command, args []string) {
@@ -85,7 +98,7 @@ func Run(cmd *cobra.Command, args []string) {
 			return
 		}
 
-		created, err := Created(s)
+		created, err := Date(s)
 		if err != nil {
 			log.Fatal("Created: ", err)
 		}
@@ -95,10 +108,15 @@ func Run(cmd *cobra.Command, args []string) {
 			log.Fatal("Description: ", err)
 		}
 
+		id, err := ID(s)
+		if err != nil {
+			log.Fatal("ID: ", err)
+		}
+
 		item := &feeds.Item{
 			Title:       Title(s),
 			Created:     created,
-			Id:          ID(created, description),
+			Id:          id,
 			Link:        &feeds.Link{Href: url},
 			Description: description,
 		}

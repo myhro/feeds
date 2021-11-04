@@ -4,7 +4,6 @@ import (
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/stretchr/testify/suite"
@@ -13,7 +12,10 @@ import (
 type LiquipediaTestSuite struct {
 	suite.Suite
 
+	InputName map[*goquery.Selection]string
+
 	Brame                   *goquery.Selection
+	BrameDiffRef            *goquery.Selection
 	Creepwave               *goquery.Selection
 	ThePrimeAndArmyGeniuses *goquery.Selection
 }
@@ -23,29 +25,33 @@ func TestLiquipediaTestSuite(t *testing.T) {
 }
 
 func (s *LiquipediaTestSuite) SetupTest() {
-	file, err := os.Open("testdata/brame.html")
-	s.Nil(err)
-	doc, err := goquery.NewDocumentFromReader(file)
-	s.Nil(err)
-	s.Brame = doc.Children()
+	s.InputName = make(map[*goquery.Selection]string)
 
-	file, err = os.Open("testdata/creepwave.html")
-	s.Nil(err)
-	doc, err = goquery.NewDocumentFromReader(file)
-	s.Nil(err)
-	s.Creepwave = doc.Children()
+	s.Brame = s.LoadFixture("testdata/brame.html")
+	s.InputName[s.Brame] = "Brame"
 
-	file, err = os.Open("testdata/the-prime-and-army-geniuses.html")
-	s.Nil(err)
-	doc, err = goquery.NewDocumentFromReader(file)
-	s.Nil(err)
-	s.ThePrimeAndArmyGeniuses = doc.Children()
+	s.BrameDiffRef = s.LoadFixture("testdata/brame-diff-ref.html")
+	s.InputName[s.BrameDiffRef] = "BrameDiffRef"
+
+	s.Creepwave = s.LoadFixture("testdata/creepwave.html")
+	s.InputName[s.Creepwave] = "Creepwave"
+
+	s.ThePrimeAndArmyGeniuses = s.LoadFixture("testdata/the-prime-and-army-geniuses.html")
+	s.InputName[s.ThePrimeAndArmyGeniuses] = "ThePrimeAndArmyGeniuses"
 }
 
 func (s *LiquipediaTestSuite) TearDownTest() {
 	s.Brame = nil
 	s.Creepwave = nil
 	s.ThePrimeAndArmyGeniuses = nil
+}
+
+func (s *LiquipediaTestSuite) LoadFixture(fixture string) *goquery.Selection {
+	file, err := os.Open(fixture)
+	s.Nil(err)
+	doc, err := goquery.NewDocumentFromReader(file)
+	s.Nil(err)
+	return doc.Children()
 }
 
 func (s *LiquipediaTestSuite) TestDescriptionLinks() {
@@ -154,9 +160,34 @@ func (s *LiquipediaTestSuite) TestDescriptionRemovedRef() {
 }
 
 func (s *LiquipediaTestSuite) TestID() {
-	date := time.Date(2021, time.October, 1, 12, 0, 0, 0, time.UTC)
-	id := ID(date, "example text")
-	s.Equal("tag:liquipedia.net,2021-10-01:DpSuNtpv8DmSpX/dvfRyi2CdDX/m6wGfqfG5tbVA2DU", id)
+	brameID := "tag:liquipedia.net,2021-10-21:Z0vW1sdL0qyi7i4s/gzMqfefZC6XOrUlK3XfR7eD4wI"
+	table := []struct {
+		in  *goquery.Selection
+		out string
+	}{
+		{
+			in:  s.Brame,
+			out: brameID,
+		},
+		{
+			in:  s.BrameDiffRef,
+			out: brameID,
+		},
+		{
+			in:  s.Creepwave,
+			out: "tag:liquipedia.net,2021-10-22:CxJ7qmuZME1yW1XZbBWK3tNVXS/n9MdyHlY6vW3o6n8",
+		},
+		{
+			in:  s.ThePrimeAndArmyGeniuses,
+			out: "tag:liquipedia.net,2021-10-22:ZSn2YVaXK+alPQgptA3LwU5MfddMQxvOqD1mw/iJ23k",
+		},
+	}
+
+	for _, tt := range table {
+		id, err := ID(tt.in)
+		s.Nil(err)
+		s.Equal(tt.out, id, s.InputName[tt.in])
+	}
 }
 
 func (s *LiquipediaTestSuite) TestTitle() {
