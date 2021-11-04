@@ -26,8 +26,9 @@ func Created(s *goquery.Selection) (time.Time, error) {
 	return created, nil
 }
 
-func Description(s *goquery.Selection) (string, error) {
+func CleanDescription(s *goquery.Selection) *goquery.Selection {
 	s = s.Clone()
+
 	s.Find(".flag").Remove()
 	s.Find(".team-template-darkmode").Remove()
 	s.Find("img").Each(func(i int, img *goquery.Selection) {
@@ -37,10 +38,29 @@ func Description(s *goquery.Selection) (string, error) {
 		}
 	})
 
+	return s
+}
+
+func Description(s *goquery.Selection) (string, error) {
+	s = CleanDescription(s)
+
 	html, err := s.Html()
 	if err != nil {
 		return "", fmt.Errorf("Selection.Html: %w", err)
 	}
+
+	return html, nil
+}
+
+func DescriptionWithoutRef(s *goquery.Selection) (string, error) {
+	s = CleanDescription(s)
+	s.Find(".Ref").Remove()
+
+	html, err := s.Html()
+	if err != nil {
+		return "", fmt.Errorf("Selection.Html: %w", err)
+	}
+
 	return html, nil
 }
 

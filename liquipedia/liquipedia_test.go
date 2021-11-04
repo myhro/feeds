@@ -135,6 +135,24 @@ func (s *LiquipediaTestSuite) TestDescriptionRemovedImages() {
 	}
 }
 
+func (s *LiquipediaTestSuite) TestDescriptionRemovedRef() {
+	list := []*goquery.Selection{
+		s.Brame,
+		s.Creepwave,
+		s.ThePrimeAndArmyGeniuses,
+	}
+
+	for _, sel := range list {
+		desc, err := DescriptionWithoutRef(sel)
+		s.Nil(err)
+		s.NotEmpty(desc)
+
+		doc, err := goquery.NewDocumentFromReader(strings.NewReader(desc))
+		s.Nil(err)
+		s.Zero(doc.Find(".Ref").Length())
+	}
+}
+
 func (s *LiquipediaTestSuite) TestID() {
 	date := time.Date(2021, time.October, 1, 12, 0, 0, 0, time.UTC)
 	id := ID(date, "example text")
