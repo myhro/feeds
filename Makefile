@@ -1,3 +1,4 @@
+CF_PAGES_WEBHOOK ?= http://httpbin.org/post
 DIST_FOLDER = dist
 
 .PHONY: autossegredos copasa liquipedia
@@ -13,6 +14,9 @@ build: autossegredos liquipedia
 
 copasa: dist
 	go run main.go copasa > $(DIST_FOLDER)/copasa.xml
+
+deploy:
+	@echo $(CF_PAGES_WEBHOOK) | xargs curl -X POST
 
 dist:
 	mkdir -p $(DIST_FOLDER)

@@ -1,0 +1,15 @@
+---
+name: Deploy
+on:
+  schedule:
+    - cron: '0 * * * *'
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy
+        env:
+          CF_PAGES_WEBHOOK: ${{ secrets.CF_PAGES_WEBHOOK }}
+        run: |
+          make deploy
