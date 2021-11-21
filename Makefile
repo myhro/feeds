@@ -16,7 +16,7 @@ copasa: dist
 	go run main.go copasa > $(DIST_FOLDER)/copasa.xml
 
 deploy:
-	@echo $(CF_PAGES_WEBHOOK) | xargs curl -X POST
+	@echo $(CF_PAGES_WEBHOOK) | xargs curl -X POST -s
 
 dist:
 	mkdir -p $(DIST_FOLDER)
