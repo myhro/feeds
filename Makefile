@@ -9,7 +9,7 @@ clean:
 autossegredos: dist
 	go run main.go autossegredos > $(DIST_FOLDER)/autossegredos.xml
 
-build: autossegredos liquipedia
+build: autossegredos liquipedia oldnewthing
 	cp 404.html $(DIST_FOLDER)/
 
 copasa: dist
@@ -23,6 +23,9 @@ dist:
 
 liquipedia: dist
 	go run main.go liquipedia > $(DIST_FOLDER)/liquipedia.xml
+
+oldnewthing: dist
+	go run main.go oldnewthing > $(DIST_FOLDER)/oldnewthing.xml
 
 serve:
 	npx wrangler pages dev $(DIST_FOLDER)/

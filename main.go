@@ -8,6 +8,7 @@ import (
 	"github.com/myhro/feeds/autossegredos"
 	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/liquipedia"
+	"github.com/myhro/feeds/oldnewthing"
 )
 
 func main() {
@@ -34,9 +35,16 @@ func main() {
 		Run:   liquipedia.Run,
 	}
 
+	oldnewthingCmd := &cobra.Command{
+		Use:   "oldnewthing",
+		Short: oldnewthing.FeedTitle,
+		Run:   oldnewthing.Run,
+	}
+
 	rootCmd.AddCommand(autosSegredosCmd)
 	rootCmd.AddCommand(copasaCmd)
 	rootCmd.AddCommand(liquipediaCmd)
+	rootCmd.AddCommand(oldnewthingCmd)
 
 	err := rootCmd.Execute()
 	if err != nil {
