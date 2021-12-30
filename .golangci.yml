@@ -1,0 +1,19 @@
+---
+linters:
+  enable-all: true
+  disable:
+    - exhaustivestruct
+    - forbidigo
+    - gci
+    - gochecknoglobals
+    - goerr113
+    - gofumpt
+    - gomnd
+    - ifshort
+    - nlreturn
+    - noctx
+    - paralleltest
+    - testpackage
+    - varnamelen
+run:
+  tests: false

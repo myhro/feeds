@@ -16,8 +16,9 @@ import (
 const FeedTitle = "Copasa - Em Racionamento - Montes Claros"
 
 func clean(s string) string {
-	s = strings.Replace(s, "\n", "", -1)
+	s = strings.ReplaceAll(s, "\n", "")
 	s = strings.Join(strings.Fields(s), " ")
+
 	return s
 }
 
@@ -27,7 +28,7 @@ func Run(cmd *cobra.Command, args []string) {
 	gen := generator.Generator{
 		CSS:   ".item",
 		Title: FeedTitle,
-		URL:   baseURL + "?area=/site-copasa-conteudos/internet/perfil/imprensa/noticias/plano-de-racionamento/racionamento-encerrado/co-montes-claros",
+		URL:   baseURL + "?area=/site-copasa-conteudos/internet/perfil/imprensa/noticias/plano-de-racionamento/racionamento-encerrado/co-montes-claros", //nolint:lll
 	}
 
 	gen.Parse = func(i int, s *goquery.Selection) {
@@ -58,5 +59,6 @@ func Run(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal("Generator.Generate: ", err)
 	}
+
 	fmt.Println(atom)
 }

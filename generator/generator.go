@@ -22,15 +22,18 @@ func (g *Generator) Generate() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("http.NewRequest: %w", err)
 	}
+
 	req.Header.Add("Accept-Language", "en-us")
 
 	client := &http.Client{}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("Client.Do: %w", err)
 	}
+	defer resp.Body.Close()
 
-	doc, err := goquery.NewDocumentFromResponse(resp)
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		return "", fmt.Errorf("goquery.NewDocumentFromResponse: %w", err)
 	}
@@ -47,5 +50,6 @@ func (g *Generator) Generate() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Generator.Feed.ToAtom: %w", err)
 	}
+
 	return atom, nil
 }

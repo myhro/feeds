@@ -21,6 +21,12 @@ deploy:
 dist:
 	mkdir -p $(DIST_FOLDER)
 
+golangci-lint:
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.43.0
+
+lint:
+	golangci-lint run
+
 liquipedia: dist
 	go run main.go liquipedia > $(DIST_FOLDER)/liquipedia.xml
 

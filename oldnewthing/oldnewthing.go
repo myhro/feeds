@@ -19,8 +19,8 @@ func CleanDescription(s *goquery.Selection) string {
 	s = s.Clone()
 	s.Find(".entry-header").Remove()
 	s.Find(".entry-footer").Remove()
-	text := s.Text()
-	return strings.TrimSpace(text)
+
+	return strings.TrimSpace(s.Text())
 }
 
 func Run(cmd *cobra.Command, args []string) {
@@ -36,11 +36,11 @@ func Run(cmd *cobra.Command, args []string) {
 		}
 
 		date := s.Find(".entry-post-date").Text()
+		date = strings.TrimSpace(date)
 		title := s.Find(".entry-title").Text()
 		link, _ := s.Find(".entry-title").Find("a").Attr("href")
 		description := CleanDescription(s.Find(".entry-content"))
 
-		date = strings.TrimSpace(date)
 		created, err := time.Parse("January 02, 2006", date)
 		if err != nil {
 			log.Fatal("time.Parse: ", err)
@@ -59,5 +59,6 @@ func Run(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal("Generator.Generate: ", err)
 	}
+
 	fmt.Println(atom)
 }
