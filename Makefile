@@ -1,7 +1,7 @@
 CF_PAGES_WEBHOOK ?= http://httpbin.org/post
 DIST_FOLDER = dist
 
-.PHONY: autossegredos copasa liquipedia
+.PHONY: autossegredos copasa liquipedia oldnewthing
 
 clean:
 	rm -rf $(DIST_FOLDER)/

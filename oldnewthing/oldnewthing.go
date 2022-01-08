@@ -41,7 +41,7 @@ func Run(cmd *cobra.Command, args []string) {
 		link, _ := s.Find(".entry-title").Find("a").Attr("href")
 		description := CleanDescription(s.Find(".entry-content"))
 
-		created, err := time.Parse("January 02, 2006", date)
+		created, err := time.Parse("January 2, 2006", date)
 		if err != nil {
 			log.Fatal("time.Parse: ", err)
 		}
