@@ -7,7 +7,6 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/feeds"
-	"github.com/spf13/cobra"
 
 	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/generator"
@@ -22,10 +21,6 @@ func CleanDescription(s *goquery.Selection) string {
 	s.Find(".entry-footer").Remove()
 
 	return strings.TrimSpace(s.Text())
-}
-
-func Run(cmd *cobra.Command, args []string) {
-	generator.Print(Command, XML)
 }
 
 func XML() (string, error) {

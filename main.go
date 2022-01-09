@@ -29,13 +29,13 @@ func main() {
 	autosSegredosCmd := &cobra.Command{
 		Use:   autossegredos.Command,
 		Short: autossegredos.FeedTitle,
-		Run:   autossegredos.Run,
+		Run:   cmd.AutosSegredos,
 	}
 
 	copasaCmd := &cobra.Command{
 		Use:   copasa.Command,
 		Short: copasa.FeedTitle,
-		Run:   copasa.Run,
+		Run:   cmd.Copasa,
 	}
 
 	generateCmd := &cobra.Command{
@@ -53,13 +53,13 @@ func main() {
 	liquipediaCmd := &cobra.Command{
 		Use:   liquipedia.Command,
 		Short: liquipedia.FeedTitle,
-		Run:   liquipedia.Run,
+		Run:   cmd.Liquipedia,
 	}
 
 	oldnewthingCmd := &cobra.Command{
 		Use:   oldnewthing.Command,
 		Short: oldnewthing.FeedTitle,
-		Run:   oldnewthing.Run,
+		Run:   cmd.OldNewThing,
 	}
 
 	rootCmd.AddCommand(autosSegredosCmd)

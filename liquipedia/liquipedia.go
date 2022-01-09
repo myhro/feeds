@@ -9,7 +9,6 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/feeds"
-	"github.com/spf13/cobra"
 
 	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/generator"
@@ -83,10 +82,6 @@ func ID(s *goquery.Selection) (string, error) {
 	id := fmt.Sprintf("tag:liquipedia.net,%v:%v", date.Format("2006-01-02"), hash)
 
 	return id, nil
-}
-
-func Run(cmd *cobra.Command, args []string) {
-	generator.Print(Command, XML)
 }
 
 func Title(s *goquery.Selection) string {
