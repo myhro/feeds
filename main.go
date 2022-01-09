@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/myhro/feeds/autossegredos"
+	"github.com/myhro/feeds/cmd"
 	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/liquipedia"
@@ -37,6 +38,18 @@ func main() {
 		Run:   copasa.Run,
 	}
 
+	generateCmd := &cobra.Command{
+		Use:   "generate",
+		Short: "Generate multiple feeds at once",
+		Run:   cmd.Generate,
+	}
+	generateCmd.Flags().StringSliceP("feed", "f", []string{}, "feed to generate, can be specified multiple times")
+
+	err := generateCmd.MarkFlagRequired("feed")
+	if err != nil {
+		log.Fatal("generateCmd.MarkFlagRequired: ", err)
+	}
+
 	liquipediaCmd := &cobra.Command{
 		Use:   liquipedia.Command,
 		Short: liquipedia.FeedTitle,
@@ -51,10 +64,13 @@ func main() {
 
 	rootCmd.AddCommand(autosSegredosCmd)
 	rootCmd.AddCommand(copasaCmd)
+	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(liquipediaCmd)
 	rootCmd.AddCommand(oldnewthingCmd)
 
-	err := rootCmd.Execute()
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
+
+	err = rootCmd.Execute()
 	if err != nil {
 		log.Fatal("rootCmd.Execute: ", err)
 	}
