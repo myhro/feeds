@@ -2,7 +2,6 @@ package autossegredos
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -10,12 +9,18 @@ import (
 	"github.com/gorilla/feeds"
 	"github.com/spf13/cobra"
 
+	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/generator"
 )
 
+const Command = "autossegredos"
 const FeedTitle = "Autos Segredos - Arquivos Segredos"
 
 func Run(cmd *cobra.Command, args []string) {
+	generator.Print(Command, XML)
+}
+
+func XML() (string, error) {
 	gen := generator.Generator{
 		CSS:   ".tdb_module_loop",
 		Title: FeedTitle,
@@ -34,7 +39,7 @@ func Run(cmd *cobra.Command, args []string) {
 
 		created, err := time.Parse(time.RFC3339, date)
 		if err != nil {
-			log.Fatal("time.Parse: ", err)
+			errormap.Store(Command, fmt.Errorf("time.Parse: %w", err))
 		}
 
 		item := &feeds.Item{
@@ -48,8 +53,8 @@ func Run(cmd *cobra.Command, args []string) {
 
 	atom, err := gen.Generate()
 	if err != nil {
-		log.Fatal("Generator.Generate: ", err)
+		return "", fmt.Errorf("gen.Generate: %w", err)
 	}
 
-	fmt.Println(atom)
+	return atom, nil
 }

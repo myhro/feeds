@@ -2,7 +2,6 @@ package copasa
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -10,9 +9,11 @@ import (
 	"github.com/gorilla/feeds"
 	"github.com/spf13/cobra"
 
+	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/generator"
 )
 
+const Command = "copasa"
 const FeedTitle = "Copasa - Em Racionamento - Montes Claros"
 
 func clean(s string) string {
@@ -23,6 +24,10 @@ func clean(s string) string {
 }
 
 func Run(cmd *cobra.Command, args []string) {
+	generator.Print(Command, XML)
+}
+
+func XML() (string, error) {
 	baseURL := "http://www.copasa.com.br/wps/portal/internet/imprensa/noticias/plano-de-racionamento/filter"
 
 	gen := generator.Generator{
@@ -43,7 +48,7 @@ func Run(cmd *cobra.Command, args []string) {
 
 		created, err := time.Parse("02 Jan 2006", clean(date))
 		if err != nil {
-			log.Fatal("time.Parse: ", err)
+			errormap.Store(Command, fmt.Errorf("time.Parse: %w", err))
 		}
 
 		item := &feeds.Item{
@@ -57,8 +62,8 @@ func Run(cmd *cobra.Command, args []string) {
 
 	atom, err := gen.Generate()
 	if err != nil {
-		log.Fatal("Generator.Generate: ", err)
+		return "", fmt.Errorf("gen.Generate: %w", err)
 	}
 
-	fmt.Println(atom)
+	return atom, nil
 }

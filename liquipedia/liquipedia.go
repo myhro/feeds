@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -12,9 +11,11 @@ import (
 	"github.com/gorilla/feeds"
 	"github.com/spf13/cobra"
 
+	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/generator"
 )
 
+const Command = "liquipedia"
 const FeedTitle = "Liquipedia - Player Transfers"
 
 func Date(s *goquery.Selection) (time.Time, error) {
@@ -85,6 +86,15 @@ func ID(s *goquery.Selection) (string, error) {
 }
 
 func Run(cmd *cobra.Command, args []string) {
+	generator.Print(Command, XML)
+}
+
+func Title(s *goquery.Selection) string {
+	title := s.Find(".Name").Text()
+	return strings.TrimSpace(title)
+}
+
+func XML() (string, error) {
 	url := "https://liquipedia.net/dota2/Portal:Transfers"
 
 	gen := generator.Generator{
@@ -100,17 +110,17 @@ func Run(cmd *cobra.Command, args []string) {
 
 		created, err := Date(s)
 		if err != nil {
-			log.Fatal("Created: ", err)
+			errormap.Store(Command, fmt.Errorf("date: %w", err))
 		}
 
 		description, err := Description(s)
 		if err != nil {
-			log.Fatal("Description: ", err)
+			errormap.Store(Command, fmt.Errorf("description: %w", err))
 		}
 
 		id, err := ID(s)
 		if err != nil {
-			log.Fatal("ID: ", err)
+			errormap.Store(Command, fmt.Errorf("id: %w", err))
 		}
 
 		item := &feeds.Item{
@@ -125,13 +135,8 @@ func Run(cmd *cobra.Command, args []string) {
 
 	atom, err := gen.Generate()
 	if err != nil {
-		log.Fatal("Generator.Generate: ", err)
+		return "", fmt.Errorf("gen.Generate: %w", err)
 	}
 
-	fmt.Println(atom)
-}
-
-func Title(s *goquery.Selection) string {
-	title := s.Find(".Name").Text()
-	return strings.TrimSpace(title)
+	return atom, nil
 }

@@ -35,7 +35,7 @@ func (g *Generator) Generate() (string, error) {
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return "", fmt.Errorf("goquery.NewDocumentFromResponse: %w", err)
+		return "", fmt.Errorf("goquery.NewDocumentFromReader: %w", err)
 	}
 
 	g.Feed = &feeds.Feed{
