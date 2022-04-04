@@ -38,7 +38,12 @@ func mapChan(key string) chan error {
 		return nil
 	}
 
-	return value.(chan error)
+	ch, ok := value.(chan error)
+	if !ok {
+		return nil
+	}
+
+	return ch
 }
 
 func Store(key string, err error) {
