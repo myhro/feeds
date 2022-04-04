@@ -26,7 +26,7 @@ generate:
 	cp 404.html $(DIST_FOLDER)/
 
 golangci-lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.43.0
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
 
 lint:
 	golangci-lint run
