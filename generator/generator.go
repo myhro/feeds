@@ -18,7 +18,7 @@ type Generator struct {
 }
 
 func (g *Generator) Generate() (string, error) {
-	req, err := http.NewRequest("GET", g.URL, nil)
+	req, err := http.NewRequest(http.MethodGet, g.URL, nil)
 	if err != nil {
 		return "", fmt.Errorf("http.NewRequest: %w", err)
 	}
