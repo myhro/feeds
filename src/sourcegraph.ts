@@ -1,5 +1,5 @@
-import cheerio from 'cheerio';
 import fetch from 'node-fetch';
+import { load } from 'cheerio';
 import { Feed } from 'feed';
 
 (async () => {
@@ -13,7 +13,7 @@ import { Feed } from 'feed';
 
   const root = 'https://about.sourcegraph.com';
   const data = await fetch(url);
-  const $ = cheerio.load(await data.text());
+  const $ = load(await data.text());
   const posts = $('.card').slice(0, 10);
   for (const p of posts) {
     const title = $('.tw-block', p).text();
