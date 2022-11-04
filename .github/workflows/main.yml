@@ -15,13 +15,26 @@ jobs:
       - name: Build
         run: |
           make build
-  lint:
+  golint:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - uses: golangci/golangci-lint-action@v2
         with:
           version: v1.48.0
+  jslint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Dependencies
+        run: |
+          npm ci
+      - name: Check
+        run: |
+          make check
+      - name: Typescript
+        run: |
+          make tsc
   test:
     runs-on: ubuntu-20.04
     steps:
