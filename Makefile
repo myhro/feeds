@@ -3,14 +3,14 @@ DIST_FOLDER = dist
 
 .PHONY: autossegredos copasa liquipedia oldnewthing
 
-clean:
-	rm -rf $(DIST_FOLDER)/
-
 autossegredos: dist
 	go run main.go autossegredos > $(DIST_FOLDER)/autossegredos.xml
 
 build: autossegredos liquipedia oldnewthing
 	cp 404.html $(DIST_FOLDER)/
+
+clean:
+	rm -rf $(DIST_FOLDER)/
 
 copasa: dist
 	go run main.go copasa > $(DIST_FOLDER)/copasa.xml
@@ -42,3 +42,6 @@ serve:
 
 test:
 	go test -v ./...
+
+tsc:
+	npx tsc --noEmit
