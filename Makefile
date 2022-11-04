@@ -9,6 +9,9 @@ autossegredos: dist
 build: autossegredos liquipedia oldnewthing
 	cp 404.html $(DIST_FOLDER)/
 
+check:
+	npx prettier --check src/
+
 clean:
 	rm -rf $(DIST_FOLDER)/
 
@@ -36,6 +39,9 @@ liquipedia: dist
 
 oldnewthing: dist
 	go run main.go oldnewthing > $(DIST_FOLDER)/oldnewthing.xml
+
+prettier:
+	npx prettier --write src/
 
 serve:
 	npx wrangler pages dev $(DIST_FOLDER)/
