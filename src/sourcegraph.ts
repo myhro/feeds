@@ -8,6 +8,7 @@ import { Feed } from 'feed';
     id: url,
     title: 'Sourcegraph Blog',
     copyright: '',
+    link: url,
   });
 
   const root = 'https://about.sourcegraph.com';
