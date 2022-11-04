@@ -24,7 +24,7 @@ deploy:
 dist:
 	mkdir -p $(DIST_FOLDER)
 
-generate:
+generate: sourcegraph
 	go run main.go generate -f autossegredos,liquipedia,oldnewthing
 	cp 404.html $(DIST_FOLDER)/
 
@@ -45,6 +45,9 @@ prettier:
 
 serve:
 	npx wrangler pages dev $(DIST_FOLDER)/
+
+sourcegraph: dist
+	npx ts-node ./src/sourcegraph.ts > $(DIST_FOLDER)/sourcegraph.xml
 
 test:
 	go test -v ./...
