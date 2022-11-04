@@ -6,7 +6,7 @@ DIST_FOLDER = dist
 autossegredos: dist
 	go run main.go autossegredos > $(DIST_FOLDER)/autossegredos.xml
 
-build: autossegredos liquipedia oldnewthing
+build: autossegredos liquipedia oldnewthing sourcegraph teamspeak
 	cp 404.html $(DIST_FOLDER)/
 
 check:
