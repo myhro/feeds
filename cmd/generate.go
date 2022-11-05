@@ -10,7 +10,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/myhro/feeds/autossegredos"
 	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/liquipedia"
@@ -84,15 +83,6 @@ func Generate(cmd *cobra.Command, args []string) {
 
 	for _, c := range feeds {
 		switch c {
-		case autossegredos.Command:
-			go func() {
-				f := Feed{
-					Command: autossegredos.Command,
-					XML:     autossegredos.XML,
-				}
-				f.Generate()
-				wg.Done()
-			}()
 		case copasa.Command:
 			go func() {
 				f := Feed{

@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/myhro/feeds/autossegredos"
 	"github.com/myhro/feeds/cmd"
 	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/errormap"
@@ -14,7 +13,6 @@ import (
 
 func main() {
 	errormap.Init(
-		autossegredos.Command,
 		copasa.Command,
 		liquipedia.Command,
 	)
@@ -22,12 +20,6 @@ func main() {
 	rootCmd := &cobra.Command{
 		Use:   "feeds",
 		Short: "Atom/RSS feed generator for websites that don't offer them",
-	}
-
-	autosSegredosCmd := &cobra.Command{
-		Use:   autossegredos.Command,
-		Short: autossegredos.FeedTitle,
-		Run:   cmd.AutosSegredos,
 	}
 
 	copasaCmd := &cobra.Command{
@@ -54,7 +46,6 @@ func main() {
 		Run:   cmd.Liquipedia,
 	}
 
-	rootCmd.AddCommand(autosSegredosCmd)
 	rootCmd.AddCommand(copasaCmd)
 	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(liquipediaCmd)
