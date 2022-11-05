@@ -10,7 +10,6 @@ import (
 	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/liquipedia"
-	"github.com/myhro/feeds/oldnewthing"
 )
 
 func main() {
@@ -18,7 +17,6 @@ func main() {
 		autossegredos.Command,
 		copasa.Command,
 		liquipedia.Command,
-		oldnewthing.Command,
 	)
 
 	rootCmd := &cobra.Command{
@@ -56,17 +54,10 @@ func main() {
 		Run:   cmd.Liquipedia,
 	}
 
-	oldnewthingCmd := &cobra.Command{
-		Use:   oldnewthing.Command,
-		Short: oldnewthing.FeedTitle,
-		Run:   cmd.OldNewThing,
-	}
-
 	rootCmd.AddCommand(autosSegredosCmd)
 	rootCmd.AddCommand(copasaCmd)
 	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(liquipediaCmd)
-	rootCmd.AddCommand(oldnewthingCmd)
 
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 

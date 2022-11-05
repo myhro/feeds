@@ -14,7 +14,6 @@ import (
 	"github.com/myhro/feeds/copasa"
 	"github.com/myhro/feeds/errormap"
 	"github.com/myhro/feeds/liquipedia"
-	"github.com/myhro/feeds/oldnewthing"
 )
 
 type Feed struct {
@@ -108,15 +107,6 @@ func Generate(cmd *cobra.Command, args []string) {
 				f := Feed{
 					Command: liquipedia.Command,
 					XML:     liquipedia.XML,
-				}
-				f.Generate()
-				wg.Done()
-			}()
-		case oldnewthing.Command:
-			go func() {
-				f := Feed{
-					Command: oldnewthing.Command,
-					XML:     oldnewthing.XML,
 				}
 				f.Generate()
 				wg.Done()

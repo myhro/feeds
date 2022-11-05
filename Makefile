@@ -1,7 +1,7 @@
 CF_PAGES_WEBHOOK ?= http://httpbin.org/post
 DIST_FOLDER = dist
 
-.PHONY: autossegredos copasa liquipedia oldnewthing
+.PHONY: autossegredos copasa liquipedia
 
 autossegredos: dist
 	go run main.go autossegredos > $(DIST_FOLDER)/autossegredos.xml
@@ -24,8 +24,8 @@ deploy:
 dist:
 	mkdir -p $(DIST_FOLDER)
 
-generate: sourcegraph teamspeak
-	go run main.go generate -f autossegredos,liquipedia,oldnewthing
+generate: oldnewthing sourcegraph teamspeak
+	go run main.go generate -f autossegredos,liquipedia
 	cp 404.html $(DIST_FOLDER)/
 
 golangci-lint:
@@ -38,7 +38,7 @@ liquipedia: dist
 	go run main.go liquipedia > $(DIST_FOLDER)/liquipedia.xml
 
 oldnewthing: dist
-	go run main.go oldnewthing > $(DIST_FOLDER)/oldnewthing.xml
+	npx ts-node ./src/oldnewthing.ts > $(DIST_FOLDER)/oldnewthing.xml
 
 prettier:
 	npx prettier --write src/
