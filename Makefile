@@ -1,7 +1,7 @@
 CF_PAGES_WEBHOOK ?= http://httpbin.org/post
 DIST_FOLDER = dist
 
-.PHONY: copasa liquipedia
+.PHONY: liquipedia
 
 autossegredos: dist
 	npx ts-node ./src/autossegredos.ts > $(DIST_FOLDER)/autossegredos.xml
@@ -14,9 +14,6 @@ check:
 
 clean:
 	rm -rf $(DIST_FOLDER)/
-
-copasa: dist
-	go run main.go copasa > $(DIST_FOLDER)/copasa.xml
 
 deploy:
 	@echo $(CF_PAGES_WEBHOOK) | xargs curl -X POST -s
