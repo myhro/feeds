@@ -35,6 +35,9 @@ jobs:
       - name: Check
         run: |
           make check
+      - name: Lint
+        run: |
+          make eslint
       - name: Typescript
         run: |
           make tsc

@@ -21,6 +21,9 @@ deploy:
 dist:
 	mkdir -p $(DIST_FOLDER)
 
+eslint:
+	DEBUG=eslint:cli-engine npx eslint src/
+
 golangci-lint:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.48.0
 
