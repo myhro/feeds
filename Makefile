@@ -30,6 +30,9 @@ lint:
 liquipedia: dist
 	go run main.go liquipedia > $(DIST_FOLDER)/liquipedia.xml
 
+mocha:
+	npx mocha -r ts-node/register src/**/*.test.ts
+
 oldnewthing: dist
 	npx ts-node ./src/oldnewthing.ts > $(DIST_FOLDER)/oldnewthing.xml
 
