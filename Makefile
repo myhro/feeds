@@ -21,10 +21,6 @@ deploy:
 dist:
 	mkdir -p $(DIST_FOLDER)
 
-generate: autossegredos oldnewthing sourcegraph teamspeak
-	go run main.go generate -f liquipedia
-	cp 404.html $(DIST_FOLDER)/
-
 golangci-lint:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.48.0
 
