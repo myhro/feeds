@@ -33,7 +33,7 @@ prettier:
 	npx prettier --write $(CODE_FOLDERS)
 
 serve:
-	npx wrangler pages dev $(DIST_FOLDER)/
+	BROWSER=none npx wrangler pages dev $(DIST_FOLDER)/
 
 sourcegraph: dist
 	npx ts-node ./bin/sourcegraph.ts > $(DIST_FOLDER)/sourcegraph.xml
