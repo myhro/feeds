@@ -1,8 +1,6 @@
 CF_PAGES_WEBHOOK ?= http://httpbin.org/post
 DIST_FOLDER = dist
 
-.PHONY: liquipedia
-
 autossegredos: dist
 	npx ts-node ./src/autossegredos.ts > $(DIST_FOLDER)/autossegredos.xml
 
@@ -22,7 +20,7 @@ dist:
 	mkdir -p $(DIST_FOLDER)
 
 eslint:
-	DEBUG=eslint:cli-engine npx eslint src/
+	DEBUG=eslint:cli-engine npx eslint bin/ src/
 
 golangci-lint:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.48.0
@@ -31,7 +29,7 @@ lint:
 	golangci-lint run
 
 liquipedia: dist
-	go run main.go liquipedia > $(DIST_FOLDER)/liquipedia.xml
+	npx ts-node ./bin/liquipedia.ts > $(DIST_FOLDER)/liquipedia.xml
 
 mocha:
 	npx mocha -r ts-node/register src/**/*.test.ts
