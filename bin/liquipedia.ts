@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { load } from 'cheerio';
 import { Feed } from 'feed';
-import { description, entryID } from '../src/liquipedia'
+import { description, entryID } from '../src/liquipedia';
 
 (async () => {
   const url = 'https://liquipedia.net/dota2/Portal:Transfers';
