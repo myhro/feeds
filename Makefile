@@ -19,20 +19,11 @@ deploy:
 dist:
 	mkdir -p $(DIST_FOLDER)
 
-eslint:
-	DEBUG=eslint:cli-engine npx eslint bin/ src/
-
-golangci-lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.48.0
-
 lint:
-	golangci-lint run
+	DEBUG=eslint:cli-engine npx eslint bin/ src/
 
 liquipedia: dist
 	npx ts-node ./bin/liquipedia.ts > $(DIST_FOLDER)/liquipedia.xml
-
-mocha:
-	npx mocha -r ts-node/register src/**/*.test.ts
 
 oldnewthing: dist
 	npx ts-node ./src/oldnewthing.ts > $(DIST_FOLDER)/oldnewthing.xml
@@ -50,7 +41,7 @@ teamspeak: dist
 	npx ts-node ./src/teamspeak.ts > $(DIST_FOLDER)/teamspeak.xml
 
 test:
-	go test -v ./...
+	npx mocha -r ts-node/register src/**/*.test.ts
 
 tsc:
 	npx tsc --noEmit
