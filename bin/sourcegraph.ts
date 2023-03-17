@@ -21,7 +21,7 @@ import { Feed } from 'feed';
     const link = new URL(href, root).href;
     const time = $('time', p).text();
     const date = new Date(time);
-    const description = $('.row p', p).text();
+    const description = $('.md\\:col-span-2 p', p).text();
 
     feed.addItem({
       title: title,
