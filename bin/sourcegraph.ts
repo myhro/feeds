@@ -14,10 +14,10 @@ import { Feed } from 'feed';
   const root = 'https://about.sourcegraph.com';
   const data = await fetch(url);
   const $ = load(await data.text());
-  const posts = $('.card').slice(0, 10);
+  const posts = $('article').slice(0, 10);
   for (const p of posts) {
-    const title = $('.tw-block', p).text();
-    const href = $('.tw-block', p).attr('href') || '';
+    const title = $('h4', p).text();
+    const href = $('a', p).attr('href') || '';
     const link = new URL(href, root).href;
     const time = $('time', p).text();
     const date = new Date(time);
