@@ -19,12 +19,14 @@ import { Feed } from 'feed';
     const title = $('h4', p).text();
     const href = $('a', p).attr('href') || '';
     const link = new URL(href, root).href;
+    const author = $('.mb-0 span', p).text().trim();
     const time = $('time', p).text();
     const date = new Date(time);
     const description = $('.md\\:col-span-2 p', p).text();
 
     feed.addItem({
       title: title,
+      author: author != '' ? [{ name: author }] : [],
       date: date,
       link: link,
       description: description,
