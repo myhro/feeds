@@ -5,7 +5,7 @@ DIST_FOLDER = dist
 autossegredos: dist
 	npx ts-node ./bin/autossegredos.ts > $(DIST_FOLDER)/autossegredos.xml
 
-build: autossegredos liquipedia oldnewthing sourcegraph teamspeak
+build: autossegredos liquipedia oldnewthing teamspeak
 	cp 404.html $(DIST_FOLDER)/
 
 check:
