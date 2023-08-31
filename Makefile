@@ -11,6 +11,9 @@ build: autossegredos liquipedia oldnewthing teamspeak
 check:
 	npx prettier --check $(CODE_FOLDERS)
 
+check-updates:
+	npx npm-check-updates -u -t minor
+
 clean:
 	rm -rf $(DIST_FOLDER)/
 
