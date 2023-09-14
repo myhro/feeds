@@ -19,7 +19,10 @@ import { Feed } from 'feed';
     const link = $('.td-module-title a', p).attr('href') || '';
     const dateText = $('.td-post-date time', p).attr('datetime') || '';
     const date = new Date(dateText);
-    const description = $('.td-excerpt', p).text();
+
+    const post = await fetch(link);
+    const content = await post.text();
+    const description = $('.td-fix-index p:first', content).text();
 
     feed.addItem({
       title: title,
