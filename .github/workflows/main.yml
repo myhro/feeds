@@ -2,8 +2,6 @@
 name: Main
 on:
   push:
-  schedule:
-    - cron: '0 * * * *'
 jobs:
   build:
     runs-on: ubuntu-22.04

@@ -1,4 +1,3 @@
-CF_PAGES_WEBHOOK ?= http://httpbin.org/post
 CODE_FOLDERS = bin/ src/
 DIST_FOLDER = dist
 
@@ -18,7 +17,7 @@ clean:
 	rm -rf $(DIST_FOLDER)/
 
 deploy:
-	@echo $(CF_PAGES_WEBHOOK) | xargs curl -X POST -s
+	npx wrangler pages deploy --branch $(BRANCH) --project-name feeds $(DIST_FOLDER)/
 
 dist:
 	mkdir -p $(DIST_FOLDER)
