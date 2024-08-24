@@ -17,7 +17,7 @@ clean:
 	rm -rf $(DIST_FOLDER)/
 
 deploy:
-	npx wrangler pages deploy --branch $(BRANCH) --project-name feeds $(DIST_FOLDER)/
+	./deploy.sh
 
 dist:
 	mkdir -p $(DIST_FOLDER)
