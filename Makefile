@@ -46,5 +46,8 @@ teamspeak: dist
 test:
 	npx mocha -r ts-node/register src/**/*.test.ts
 
+test-integration:
+	npx mocha -r ts-node/register tests/integration.test.ts
+
 tsc:
 	npx tsc --noEmit
