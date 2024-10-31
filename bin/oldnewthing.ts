@@ -17,7 +17,7 @@ import { Feed } from 'feed';
   for (const p of posts) {
     const title = $('h3', p).text().trim();
     const link = $('h3 a', p).attr('href') || '';
-    const dateElem = $('.justify-content-between > div:last-child', p);
+    const dateElem = $('.justify-content-between > div:first-child', p);
     const date = new Date(dateElem.text().trim());
     const content = $('p.mb-24', p).html() || '';
     const description = content.trim();
