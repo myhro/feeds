@@ -1,4 +1,4 @@
-CODE_FOLDERS = bin/ src/
+CODE_FOLDERS = bin/ src/ tests/
 DIST_FOLDER = dist
 
 autossegredos: dist

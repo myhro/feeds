@@ -20,11 +20,14 @@ async function countEntries(filePath: string): Promise<number> {
 }
 
 it('generated feeds should have entries', async function () {
-  const tests = ['autossegredos', 'liquipedia', 'oldnewthing', 'teamspeak'];
+  const folder = path.join(__dirname, '../dist');
+  const files = fs
+    .readdirSync(folder)
+    .filter((f) => f.endsWith('.xml'))
+    .map((f) => path.join(folder, f));
 
-  for (const t of tests) {
-    const filePath = path.join(__dirname, `../dist/${t}.xml`);
-    const count = await countEntries(filePath);
-    assert.ok(count > 5, t);
+  for (const f of files) {
+    const count = await countEntries(f);
+    assert.ok(count > 5, f);
   }
 });
