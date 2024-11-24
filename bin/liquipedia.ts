@@ -14,11 +14,18 @@ import { description, entryID } from '../src/liquipedia';
 
   const data = await fetch(url);
   const $ = load(await data.text());
-  const posts = $('.divRow').slice(0, 10);
+  const posts = $('.divRow');
+  let validPosts = 0;
   for (const p of posts) {
-    const title = $('.Name', p).text().trim();
+    if (validPosts == 10) break;
+
     const dateText = $('.Date', p).text();
     const date = new Date(dateText);
+    if (isNaN(date.getTime())) {
+      continue;
+    }
+
+    const title = $('.Name', p).text().trim();
     const content = $(p).html() || '';
     const desc = description(content);
     const id = await entryID(content);
@@ -30,6 +37,8 @@ import { description, entryID } from '../src/liquipedia';
       link: url,
       description: desc,
     });
+
+    validPosts++;
   }
 
   const atom = feed.atom1();
