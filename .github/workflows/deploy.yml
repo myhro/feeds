@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Dependencies
-        run: |
-          npm ci
       - name: Build
         run: |
           make build

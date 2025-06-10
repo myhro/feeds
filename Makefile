@@ -2,9 +2,9 @@ CODE_FOLDERS = bin/ src/ tests/
 DIST_FOLDER = dist
 
 autossegredos: dist
-	npx ts-node ./bin/autossegredos.ts > $(DIST_FOLDER)/autossegredos.xml
+	wget -O $(DIST_FOLDER)/autossegredos.xml https://www.autossegredos.com.br/category/segredos/feed/
 
-build: autossegredos liquipedia teamspeak
+build: autossegredos
 	cp 404.html $(DIST_FOLDER)/
 
 check:
