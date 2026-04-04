@@ -11,7 +11,7 @@ while true; do
 
     echo "Trying $RETRY time(s)..."
 
-    if npx wrangler pages deploy --branch "$BRANCH" --project-name feeds dist/
+    if npx wrangler deploy
     then
         break
     fi
