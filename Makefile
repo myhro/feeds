@@ -9,7 +9,7 @@ build: clean autossegredos
 clean:
 	rm -rf $(DIST_FOLDER)/
 
-deploy: build
+deploy:
 	./deploy.sh
 
 dist:
