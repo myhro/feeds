@@ -1,16 +1,16 @@
 DIST_FOLDER = dist
 
 autossegredos: dist
-	wget -O $(DIST_FOLDER)/autossegredos.xml https://www.autossegredos.com.br/category/segredos/feed/
+	./bin/fetch.sh $(DIST_FOLDER)/autossegredos.xml https://www.autossegredos.com.br/category/segredos/feed/
 
-build: clean autossegredos
+build: autossegredos
 	cp 404.html $(DIST_FOLDER)/
 
 clean:
 	rm -rf $(DIST_FOLDER)/
 
 deploy:
-	./deploy.sh
+	./bin/deploy.sh
 
 dist:
 	mkdir -p $(DIST_FOLDER)
